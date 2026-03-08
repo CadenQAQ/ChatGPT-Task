@@ -1,33 +1,39 @@
 #include<iostream>
-#include<unordered_map>
+#include<vector>
 
+using namespace std;
 
+string s1="abcabcbb";
+string s2="bbbbb";
+string s3="pwwkew";   
 
-bool has_duplicate(const int *arr, size_t n)
+int length_of_longest_substring(const std::string& s)
 {
-    std::unordered_map<int,int> m1;
-    for(size_t i = 0;i<n;++i)
-    {
-        m1[arr[i]]++;
-    }
+    std::vector<int> last(256,-1);
 
-    for(const auto &v:m1)
-    {
-        if(v.second>1)
+    int ans = 0;
+    int left = 0;
+    int right = 0;
+
+    for(int i = 0; i<s.size();++i)
+    { 
+        unsigned char c = (int)s[i];
+
+        if(last[c]>=left)
         {
-            return true;
+            left=last[c]+1;
         }
-    }
+        last[c] = right;
+        right++;
 
-    return false;
+        ans = right-left ;
+    } 
+
+    return ans;
 }
 
 int main()
 {
-    int arr[5] = {4,3,2,6};
-
-    int num = sizeof(arr)/sizeof(arr[0]);
-
-    std::cout<<has_duplicate(arr, num)<<std::endl;
+    std::cout<<length_of_longest_substring(s3);
 
 }

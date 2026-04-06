@@ -15,9 +15,6 @@ using namespace std;
 要求：
 返回 true / false
 
-⚠️ 不写完整程序
-⚠️ 只写函数
-⚠️ 优先用 unordered_set
 */
 int a[5] = {1,2,3,4,5};
 int b[4]={1,2,3,1};

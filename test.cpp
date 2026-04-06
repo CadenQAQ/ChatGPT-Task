@@ -1,39 +1,43 @@
 #include<iostream>
 #include<vector>
+#include<algorithm>
 
 using namespace std;
 
-string s1="abcabcbb";
-string s2="bbbbb";
-string s3="pwwkew";   
-
-int length_of_longest_substring(const std::string& s)
+int binary_search(vector<int>& nums, int target)
 {
-    std::vector<int> last(256,-1);
-
-    int ans = 0;
     int left = 0;
-    int right = 0;
+    int right = nums.size()-1;
+    int mid = 0;
 
-    for(int i = 0; i<s.size();++i)
-    { 
-        unsigned char c = (int)s[i];
-
-        if(last[c]>=left)
+    while(left<right)
+    {
+        mid = left+(right-left)/2;
+        if(target<nums[mid])
         {
-            left=last[c]+1;
+            right = mid-1;
+          
         }
-        last[c] = right;
-        right++;
+        else if(target>nums[mid])
+        {
+            left = mid+1;
+        }
+        else if(target==nums[mid])
+        {
+            return mid;
+        }
 
-        ans = right-left ;
-    } 
-
-    return ans;
+    }
+    return -1;
 }
+
 
 int main()
 {
-    std::cout<<length_of_longest_substring(s3);
+    vector<int>num = {1,5,6,8,22,29,30,45};
+    
+    cout<<binary_search(num, 30);
 
 }
+
+

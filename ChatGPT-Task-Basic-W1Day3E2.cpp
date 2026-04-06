@@ -31,6 +31,7 @@ using namespace std;
 //     return maxSum;
 // }
 
+/*指定长度窗口求和，找最大值*/
 int max_sum(const int* arr, int size, int k)
 {
     if (k <= 0 || size < k) return 0;
@@ -57,3 +58,4 @@ int main()
     cout<<max_sum(arr, 5,3);
 
 }
+

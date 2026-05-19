@@ -2,7 +2,9 @@
 #include <vector>
 
 using namespace std;
-/*有可能重复元素的，两次二分法*/
+/*有可能重复元素的，两次二分法
+Find First and Last Position of Element in Sorted Array
+*/
 
 int find_first(vector<int>& nums, int target)
 {

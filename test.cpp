@@ -1,71 +1,65 @@
 #include<iostream>
-#include<unordered_set>
-#include<map>
-#include<unordered_map>
+#include<stack>
+#include<vector>
+
 using namespace std;
 
-int a[5] = {1,2,3,4,5};
-int b[4]={1,2,3,1};
-int arr[] = {4,1,2,1,2};
+#include <iostream>
+#include <stack>
+#include <string>
+#include <vector>
 
-template<size_t N1, size_t N2>
-int has_common_element(const int (&arr1)[N1], const int (&arr2)[N2])
+using namespace std;
+
+// 现实场景：用栈计算已经被拍扁的网络包/风控规则指令流 (后缀表达式)
+bool evaluate_packet_rules(const vector<string>& instructions)
 {
-    unordered_set<int>m1(arr1, arr1+N1);
-    
-    for(int i = 0; i<N2;++i)
+    // 这个栈里存的不是结构，而是“计算结果的临时停机坪”
+    stack<bool> calc_stack;
+
+    for (const string& inst : instructions)
     {
-        if(m1.count(arr2[i])>0)
+        if (inst == "AND")
         {
-            return true;
+            // 遇到 AND 操作符，从栈顶弹出两个最近的计算结果
+            bool result2 = calc_stack.top(); calc_stack.pop();
+            bool result1 = calc_stack.top(); calc_stack.pop();
+            // 计算并将新结果压回栈中
+            calc_stack.push(result1 && result2);
         }
-        m1.insert(arr2[i]);
-    }
-
-    return 0;
-}
-
-int has_duplicate(const int *arr, int n)
-{
-    unordered_set<int>m2;
-
-    for(int i = 0;i<n;++i)
-    {
-        m2.insert(arr[i]);
-        if(m2.count(arr[i])>1)
+        else if (inst == "OR")
         {
-            return true;
+            // 遇到 OR 操作符，同样弹出两个结果合并
+            bool result2 = calc_stack.top(); calc_stack.pop();
+            bool result1 = calc_stack.top(); calc_stack.pop();
+            calc_stack.push(result1 || result2);
         }
-    }
-
-    return 0;
-}
-
-int single_num(const int *arr, int n)
-{
-    unordered_map<int,int>m3;
-    for(int i =0;i<n;++i)
-    {
-        m3[arr[i]]++;
-    }
-
-    for(auto v:m3)
-    {
-        if(v.second==1)
+        else
         {
-            return v.first;
+            // 遇到具体条件（在实际系统中，这里会去读取包头对应的位掩码做判断）
+            // 为了演示，我们假设 "TRUE_FLAG" 代表条件成立，其他代表不成立
+            if (inst == "TRUE_FLAG") {
+                calc_stack.push(true);
+            } else {
+                calc_stack.push(false);
+            }
         }
     }
 
-    return 0;
+    // 指令流跑完后，栈里剩下的最后那个 bool，就是这个包的最终命运（放行 or 拦截）
+    return calc_stack.top();
 }
 
 int main()
 {
+    // 模拟场景：判断一个包是否合法
+    // 原始规则：(TRUE_FLAG AND FALSE_FLAG) OR TRUE_FLAG
+    // 拍扁后的指令流：
+    vector<string> rule_stream = {"TRUE_FLAG", "FALSE_FLAG", "AND", "TRUE_FLAG", "OR"};
+
     cout << boolalpha;
-    cout << "是否有共同元素: " << has_common_element(a,b) << endl;  // 输出 true
-    cout << "a是否有重复元素: " << has_duplicate(a,5) << endl;
-    cout << "a不重复的元素是: " << single_num(arr,5) << endl;
+    cout << "数据包最终校验结果: " << evaluate_packet_rules(rule_stream) << endl; 
+    // 输出: true (因为 false OR true = true)
+
+    return 0;
 }
-
-

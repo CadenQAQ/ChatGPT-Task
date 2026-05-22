@@ -23,7 +23,7 @@ void pending_list(const vector<int>& num, vector<int>& result)
         // 核心：如果栈不为空，且今天气温打破了栈顶等待者的气温
         while(!s1.empty() && num[i] > num[s1.top()])
         {
-            int prev_day = s1.top(); // 获取等待者的下标
+            int prev_day = s1.top(); // 获取等待者的下标,s1存的是 1,2,3..这些数，不是值
             s1.pop();                // 解除等待状态，弹出
 
             // 算账：今天(i) 减去 过去那一天(prev_day) 就是等待天数

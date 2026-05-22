@@ -36,7 +36,8 @@ template<size_t N1, size_t N2>
 bool has_common_element(int (&arr1)[N1], int (&arr2)[N2])
 {
     unordered_set<int> s1(arr1, arr1 + N1);
-    /*传的不是两个数组，而是告诉 unordered_set：“从 arr1 这个内存地址开始读，一直读到 arr1 + N1 这个内存地址为止，把路上的所有数据都吸进去。” 这是一个极其优雅且底层的 C++ 惯用法。*/
+    /*传的不是两个数组，而是告诉 unordered_set：“从 arr1 这个内存地址开始读，一直读到 arr1 + N1 这个内存地址为止，把路上的所有数据都吸进去。” 
+    这是一个极其优雅且底层的 C++ 惯用法。*/
     
     for(auto v: arr2)
     {
@@ -96,7 +97,8 @@ bool has_duplicate(const int* arr, size_t n)
 连接状态的配对查找。比如在 TCP 握手/挥手日志中，找出那个发了 SYN 但没有收到 ACK 的孤儿连接。
 
 2. 量化真实场景落地：订单对账系统 (Order Reconciliation / Drop Copy)
-你的交易系统每天要发几百万笔订单（Order），交易所会回复对应的执行回报（Execution Report）。正常情况下，每一个 Order ID 都必须对应一个 Execution ID（成对出现）。
+你的交易系统每天要发几百万笔订单（Order），交易所会回复对应的执行回报（Execution Report）。
+正常情况下，每一个 Order ID 都必须对应一个 Execution ID（成对出现）。
 
 在盘中或者收盘后的风控对账环节，你需要快速找出来：哪一笔订单发出去之后，交易所完全没有理我？（也就是所谓的“掉单”）。
 
